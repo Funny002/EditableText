@@ -1,0 +1,1 @@
+export type Descendant = Element | Text;
