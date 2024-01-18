@@ -1,12 +1,13 @@
 {
-  "name": "core",
+  "name": "@editable-text/history",
   "version": "0.0.1",
   "description": "for building rich text editors",
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "author": "Funny002 <dusfunny@gmail.com>",
-  "repository": "git+https://github.com/Funny002/EditableText.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Funny002/EditableText.git"
+  },
   "private": true,
   "bugs": {
     "url": "https://github.com/Funny002/EditableText/issues"

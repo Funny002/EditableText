@@ -1,17 +1,18 @@
 {
   "name": "editable-text",
   "version": "0.0.1",
-  "description": "",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Funny002/EditableText.git"
-  },
   "private": true,
+  "description": "这是用于学习 [`Slate`](http://github.com/ianstormtaylor/slate) 的富文本编辑器。",
+  "author": "Funny002 <dusfunny@gmail.com>",
+  "license": "MIT",
+  "workspaces": [
+    "package/*"
+  ],
+  "scripts": {
+    "build:rollup": "rollup --config ./config/rollup.config.js --bundleConfigAsCjs",
+    "watch": "yarn build:rollup --watch"
+  },
+  "repository": "git+https://github.com/Funny002/EditableText.git",
   "bugs": {
     "url": "https://github.com/Funny002/EditableText/issues"
   },
@@ -23,14 +24,18 @@
     "EditText",
     "EditableText"
   ],
-  "author": "Funny002 <dusfunny@gmail.com>",
-  "license": "MIT",
   "devDependencies": {
-    "tslib": "^2.6.2",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.0"
-  },
-  "workspaces": [
-    "package/*"
-  ]
+    "@babel/core": "^7.23.7",
+    "@babel/plugin-transform-class-properties": "^7.23.3",
+    "@babel/plugin-transform-runtime": "^7.23.7",
+    "@babel/preset-env": "^7.23.8",
+    "@babel/preset-typescript": "^7.23.3",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "lodash": "^4.17.21",
+    "rollup": "^4.9.5",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.3.3"
+  }
 }

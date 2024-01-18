@@ -1,8 +1,10 @@
 import { ExtendedType } from '../types';
-import { Descendant } from './node.ts';
+import { Operation } from './operation';
+import { Descendant } from './node';
 
 export interface BaseEditor {
   children: Descendant[];
+  apply: (operation: Operation) => void;
 }
 
 export type Editor = ExtendedType<'Editor', BaseEditor>

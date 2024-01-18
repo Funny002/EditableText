@@ -1,8 +1,9 @@
-import { Editor } from './';
+import { Apply, Editor } from './';
 
 export const create = () => {
-  const edite: Editor = {
+  const editor: Editor = {
     children: [],
+    apply: (...args) => Apply(editor, ...args),
   };
-  return edite;
+  return editor;
 };
