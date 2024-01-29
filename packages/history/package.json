@@ -1,0 +1,15 @@
+{
+  "name": "@editable-text/history",
+  "private": true,
+  "version": "0.0.1",
+  "pkgName": "history",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "author": "Funny002 <dusfunny@gmail.com>",
+  "description": "for building rich text editors",
+  "repository": "git+https://github.com/Funny002/EditableText.git",
+  "files": [
+    "dist/"
+  ]
+}

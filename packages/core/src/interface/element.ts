@@ -1,5 +1,5 @@
 import { ExtendedType } from '../types';
-import { Descendant } from './node.ts';
+import { Descendant } from './node';
 
 export interface BaseElement {
   children: Descendant[];
