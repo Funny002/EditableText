@@ -1,5 +1,7 @@
 import { startCase } from 'lodash';
+import sass from 'rollup-plugin-sass';
 import babel from '@rollup/plugin-babel';
+import terser from '@rollup/plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
@@ -26,6 +28,14 @@ function configure(pkg, env, target, options = {}) {
   };
 
   const plugins = [
+    // rollup-plugin-sass
+    sass({
+      sourceMap: true,
+      failOnError: true,
+      output: `./${packagesName}/${name}/dist/style.css`,
+      include: [`./${packagesName}/${name}/src/**/*.{css, scss, sass}`],
+    }),
+
     // @rollup/plugin-node-resolve
     resolve({ browser: true }),
 
@@ -41,7 +51,7 @@ function configure(pkg, env, target, options = {}) {
       exclude: [`${packagesName}/${name}/src/**`],
     }),
 
-    //
+    // @rollup/plugin-babel
     babel({
       babelHelpers: 'runtime',
       include: [`${packagesName}/${name}/src/**`],
@@ -58,58 +68,58 @@ function configure(pkg, env, target, options = {}) {
         '@babel/plugin-transform-class-properties',
       ],
     }),
-    isUmd && isProd,
+
+    //
+    isUmd && isProd && terser(),
   ].filter(Boolean);
 
-  return Object.assign({}, (function () {
-    if (isUmd) {
-      return {
-        plugins,
-        input,
-        onwarn,
-        output: {
-          format: 'umd',
-          exports: 'named',
-          globals: pkg['umdGlobals'],
-          file: `${packagesName}/${name}/${isProd ? pkg['umdMin'] : pkg['umd']}`,
-          name: startCase(name).replace(/ /g, ''),
-        },
-        external: Object.keys(pkg['umdGlobals'] || {}),
-      };
-    }
+  if (isUmd) {
+    return {
+      plugins,
+      input,
+      onwarn,
+      output: {
+        format: 'umd',
+        exports: 'named',
+        globals: pkg['umdGlobals'] || name,
+        file: `${packagesName}/${name}/${isProd ? pkg['umdMin'] : pkg['umd']}`,
+        name: startCase(name).replace(/ /g, ''),
+      },
+      external: Object.keys(pkg['umdGlobals'] || {}),
+    };
+  }
 
-    if (isCommonJs) {
-      return {
-        plugins, input, onwarn, output: [{
-          file: `${packagesName}/${name}/${pkg['main']}`, format: 'cjs', exports: 'named', sourcemap: true,
-        }],
-        // We need to explicitly state which modules are external, meaning that
-        // they are present at runtime. In the case of non-UMD configs, this means
-        // all non-Slate packages.
-        external: id => {
-          return !!deps.find(dep => dep === id || id.startsWith(`${dep}/`));
-        },
-      };
-    }
+  if (isCommonJs) {
+    return {
+      plugins, input, onwarn, output: [{
+        file: `${packagesName}/${name}/${pkg['main']}`, format: 'cjs', exports: 'named', sourcemap: true,
+      }],
+      // We need to explicitly state which modules are external, meaning that
+      // they are present at runtime. In the case of non-UMD configs, this means
+      // all non-Slate packages.
+      external: id => {
+        return !!deps.find(dep => dep === id || id.startsWith(`${dep}/`));
+      },
+    };
+  }
 
-    if (isModule) {
-      return {
-        plugins, input, onwarn, output: [{
-          file: `${packagesName}/${name}/${pkg.module || 'dist/index.module.js'}`, format: 'es', sourcemap: true,
-        }],
-        // We need to explicitly state which modules are external, meaning that
-        // they are present at runtime. In the case of non-UMD configs, this means
-        // all non-Slate packages.
-        external: id => {
-          return !!deps.find(dep => dep === id || id.startsWith(`${dep}/`));
-        },
-      };
-    }
-  })() || {}, options);
+  if (isModule) {
+    return {
+      plugins, input, onwarn, output: [{
+        file: `${packagesName}/${name}/${pkg.module || 'dist/index.module.js'}`, format: 'es', sourcemap: true,
+      }],
+      // We need to explicitly state which modules are external, meaning that
+      // they are present at runtime. In the case of non-UMD configs, this means
+      // all non-Slate packages.
+      external: id => {
+        return !!deps.find(dep => dep === id || id.startsWith(`${dep}/`));
+      },
+    };
+  }
 }
 
 function factory(pkg, options = {}) {
-  const isProd = process.env.NODE_ENV === 'production';
+  const isProd = process.env.npm_config_node_env === 'production';
   return [
     configure(pkg, 'development', 'cjs', options),
     configure(pkg, 'development', 'module', options),

@@ -1,0 +1,29 @@
+.editable {
+    --editable-border: 1px;
+    --editable-border-color: #ddd;
+}
+
+.editable-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 30px;
+    border: var(--editable-border, 1px) solid var(--editable-border-color, #ddd);
+}
+
+.editable-body {
+    outline: none;
+    min-height: 200px;
+    border: var(--editable-border, 1px) solid var(--editable-border-color, #ddd);
+}
+
+.editable-body:focus {
+    border-color: #48f;
+}
+
+.editable > .editable-toolbar {
+    border-bottom-width: 0;
+}
+
+.editable-toolbar + .editable-body {
+    /*border-top: var(--editable-border) solid var(--editable-border-color);*/
+}

@@ -1,7 +1,7 @@
-import { ExtendedType } from '../types';
+import { ExtendedTypes } from '../utils';
 
-interface BaseOperation {
+export interface BaseOperation {
 
 }
 
-export type Operation = ExtendedType<'Operation', BaseOperation>
+export type Operation = ExtendedTypes<'Operation', BaseOperation>

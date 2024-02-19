@@ -1,9 +1,9 @@
+import { State } from '@editable-text/core';
 import { History } from './history';
-import { BaseEditor } from '@editable-text/core';
 
-export type HistoryEditor = { history: History<any> } & BaseEditor;
+export type HistoryState = { history: History<any> } & State;
 
-export default function useHistory(core: HistoryEditor) {
+export default function useHistory(core: HistoryState) {
   core.history = new History();
   return core;
 };

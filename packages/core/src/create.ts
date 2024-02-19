@@ -1,25 +1,25 @@
-import { Apply, Editor } from './';
-import { EventHandler, EventListener } from '@editable-text/utils';
+import { EventListener } from '@editable-text/utils';
+import { State } from './interface';
+import { insert } from './state';
+import { apply } from './core';
 
-export const Create = () => {
+export function createState() {
   const listener = new EventListener();
-  //
-  const editor: Editor = {
-    listener: listener,
+  const state: State = {
     children: [],
-    apply: (...args) => Apply(editor, ...args),
-    emit(type: string, ...args: any[]) {
-      listener.emit(type, ...args);
-    },
-    on(type: string, handler: EventHandler) {
-      listener.on(type, handler);
-    },
-    off(type: string, handler: EventHandler) {
-      listener.off(type, handler);
-    },
-    once(type: string, handler: EventHandler) {
-      listener.once(type, handler);
-    },
+    // Core
+    apply: (operation) => apply(state, operation),
+
+    // Listener
+    listener: listener,
+    on: (...args) => listener.on(...args),
+    off: (...args) => listener.off(...args),
+    once: (...args) => listener.once(...args),
+    emit: (...args) => listener.emit(...args),
+
+    // State
+    insert: (...args) => insert(state, ...args),
   };
-  return editor;
-};
+  //
+  return state;
+}

@@ -1,7 +1,8 @@
-import { Editable } from '@editable-text/editor';
+import { createEditable } from '@editable-text/editor';
+import '@editable-text/editor/dist/style.css';
 import history from '@editable-text/history';
 
-const editor = new Editable('#editor', {
+const editor = createEditable('#editor', {
   placeholder: 'Type here...',
   plugins: [history],
 });
